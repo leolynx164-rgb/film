@@ -1,10 +1,12 @@
 [
-    {
-        "password": "SALOMé@9I",
-        "redirect": "https://lynxinux.neocities.org/LYNXsite/leonardGO"
-    },
-    {
-        "password": "admin",
-        "redirect": "page2.html"
-    }
+  {
+    "password": "motdepasse1",
+    "type": "redirect",
+    "redirect": "https://exemple.com"
+  },
+  {
+    "password": "SALOMé@9I",
+    "type": "html",
+    "html": "<h1>Bienvenue!</h1><p>Voici votre contenu personnalisé</p>"
+  }
 ]
