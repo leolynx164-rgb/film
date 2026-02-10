@@ -1,0 +1,10 @@
+[
+    {
+        "password": "1234",
+        "redirect": "page1.html"
+    },
+    {
+        "password": "admin",
+        "redirect": "page2.html"
+    }
+]
