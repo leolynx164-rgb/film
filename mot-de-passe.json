@@ -7,6 +7,505 @@
   {
     "password": "SALOMé@9I",
     "type": "html",
-    "html": "<h1>Bienvenue!</h1><p>Voici votre contenu personnalisé</p>"
+    "html": "
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leo Password - Accès Sécurisé</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://www.blog-le-dessin.com/wp-content/uploads/2023/03/abstrait-marblage-6d3e62d6-48b3-4f84-b3e7-23506a16c5c8-1024x1024.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            width: 500px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-title {
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .logo-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Section de chargement */
+        .loading-section {
+            text-align: center;
+        }
+
+        .loading-section.hidden {
+            display: none;
+        }
+
+        .loading-text {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 25px;
+            min-height: 24px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Animation du cadenas */
+        .lock-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120px;
+        }
+
+        .lock-icon {
+            font-size: 80px;
+            color: #ffffff;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            animation: lockShake 0.5s ease-in-out;
+        }
+
+        .lock-icon.unlocking {
+            animation: unlockAnimation 1s ease-in-out forwards;
+        }
+
+        @keyframes lockShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        @keyframes unlockAnimation {
+            0% {
+                transform: rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: rotate(15deg) scale(1.1);
+            }
+            100% {
+                transform: rotate(0deg) scale(1.2);
+                opacity: 0.3;
+            }
+        }
+
+        /* Barre de progression */
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        /* Section des informations */
+        .info-section {
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .info-section.show {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            text-align: center;
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .info-title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            word-break: break-all;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .copy-btn {
+            background: rgba(76, 175, 80, 0.8);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: rgba(76, 175, 80, 1);
+            transform: scale(1.05);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn.copied {
+            background: rgba(33, 150, 243, 0.8);
+        }
+
+        .access-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(60, 60, 60, 0.8);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+
+        .access-btn:hover {
+            background: rgba(80, 80, 80, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .access-btn:active {
+            transform: translateY(0);
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 152, 0, 0.15);
+            border-left: 4px solid rgba(255, 152, 0, 0.6);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .note strong {
+            color: #ffffff;
+        }
+
+        /* Animation des particules */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo-title">LEO PASSWORD</div>
+            <div class="logo-subtitle">Système de gestion sécurisée</div>
+        </div>
+
+        <!-- Section de chargement -->
+        <div class="loading-section" id="loadingSection">
+            <div class="loading-text" id="loadingText">Initialisation...</div>
+            <div class="lock-container">
+                <div class="lock-icon" id="lockIcon">🔒</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Section des informations -->
+        <div class="info-section" id="infoSection">
+            <div class="success-icon">✓</div>
+            <div class="info-title">Accès Déverrouillé</div>
+
+            <div class="info-card">
+                <div class="info-label">Identifiant</div>
+                <div class="info-value">
+                    <span id="emailValue">renagel590@dnsclick.com</span>
+                    <button class="copy-btn" onclick="copyToClipboard('emailValue', this)">Copier</button>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">Mot de passe</div>
+                <div class="info-value">
+                    <span id="passwordValue">renagel590@dnsclick.com</span>
+                    <button class="copy-btn" onclick="copyToClipboard('passwordValue', this)">Copier</button>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">URL d'accès</div>
+                <div class="info-value">
+                    <span id="urlValue">https://college-vert.base44.app/</span>
+                    <button class="copy-btn" onclick="copyToClipboard('urlValue', this)">Copier</button>
+                </div>
+            </div>
+
+            <button class="access-btn" onclick="goToUrl()">Accéder au site</button>
+
+            <div class="note">
+                <strong>⚠️ Compte temporaire</strong><br>
+                Ces identifiants sont valables pour une session limitée. Veuillez les utiliser immédiatement et ne pas les partager.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loadingSteps = [
+            { text: "Leo Password : Création d'un compte temporaire...", duration: 3000 },
+            { text: "Déverrouillage de votre casier crypté...", duration: 3000 }
+        ];
+
+        let currentStep = 0;
+        let progress = 0;
+
+        function updateProgress(targetProgress, duration) {
+            const startProgress = progress;
+            const progressDiff = targetProgress - startProgress;
+            const startTime = Date.now();
+
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progressPercent = Math.min(elapsed / duration, 1);
+                
+                progress = startProgress + (progressDiff * progressPercent);
+                document.getElementById('progressBar').style.width = progress + '%';
+
+                if (progressPercent < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+        }
+
+        function createParticles() {
+            const container = document.querySelector('.lock-container');
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = '50%';
+                    particle.style.top = '50%';
+                    particle.style.animationDelay = Math.random() * 0.5 + 's';
+                    particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 100 + 50;
+                    particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                    particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                    
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        async function startLoading() {
+            for (let i = 0; i < loadingSteps.length; i++) {
+                const step = loadingSteps[i];
+                document.getElementById('loadingText').textContent = step.text;
+                
+                // Animation spéciale pour le déverrouillage
+                if (i === 1) {
+                    setTimeout(() => {
+                        document.getElementById('lockIcon').classList.add('unlocking');
+                        createParticles();
+                        setTimeout(() => {
+                            document.getElementById('lockIcon').textContent = '🔓';
+                        }, 500);
+                    }, 500);
+                }
+
+                const targetProgress = ((i + 1) / loadingSteps.length) * 100;
+                updateProgress(targetProgress, step.duration);
+                
+                await new Promise(resolve => setTimeout(resolve, step.duration));
+            }
+
+            // Afficher les informations
+            setTimeout(() => {
+                document.getElementById('loadingSection').classList.add('hidden');
+                document.getElementById('infoSection').classList.add('show');
+            }, 500);
+        }
+
+        function copyToClipboard(elementId, button) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✓ Copié';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Erreur de copie:', err);
+                alert('Erreur lors de la copie');
+            });
+        }
+
+        function goToUrl() {
+            window.location.href = 'https://college-vert.base44.app/';
+        }
+
+        // Démarrer le chargement au chargement de la page
+        window.addEventListener('load', startLoading);
+    </script>
+</body>
+</html>"
   }
 ]
