@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Sécurisée</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://www.blog-le-dessin.com/wp-content/uploads/2023/03/abstrait-marblage-6d3e62d6-48b3-4f84-b3e7-23506a16c5c8-1024x1024.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            width: 420px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .login-header h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .input-group input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(60, 60, 60, 0.8);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            background: rgba(80, 80, 80, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.4);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            text-align: center;
+            animation: shake 0.4s ease;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .captcha-container {
+            display: none;
+            margin-top: 25px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .captcha-container.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .captcha-checkbox {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(200, 200, 200, 0.8);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .captcha-checkbox:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(150, 150, 150, 0.9);
+        }
+
+        .checkbox-input {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #d3d3d3;
+            border-radius: 4px;
+            margin-right: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-input.checked {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .checkbox-input.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .checkbox-label {
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .captcha-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #999;
+            margin-left: 10px;
+        }
+
+        .captcha-logo-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 2px;
+        }
+
+        .captcha-challenge {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(200, 200, 200, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            animation: slideDown 0.4s ease;
+        }
+
+        .captcha-challenge.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(200, 200, 200, 0.5);
+        }
+
+        .challenge-title {
+            color: #333;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .challenge-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .challenge-close:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: #666;
+        }
+
+        .challenge-instruction {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .captcha-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .captcha-box {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(200, 200, 200, 0.5);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .captcha-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-color: rgba(150, 150, 150, 0.7);
+        }
+
+        .captcha-box:active {
+            transform: scale(0.95);
+        }
+
+        .challenge-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid rgba(200, 200, 200, 0.5);
+        }
+
+        .challenge-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .challenge-verify-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-verify-btn:hover {
+            background: #45a049;
+        }
+
+        .challenge-verify-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #ffffff;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #passwordForm.hidden,
+        #captchaForm.hidden {
+            display: none;
+        }
+
+        /* Style pour le contenu HTML affiché */
+        .html-content {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            overflow: auto;
+        }
+
+        .html-content.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Connexion</h1>
+            <p>Entrez votre mot de passe pour continuer</p>
+        </div>
+
+        <form id="passwordForm">
+            <div class="input-group">
+                <label for="password">Mot de passe</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Entrez votre mot de passe"
+                    required
+                    autocomplete="off"
+                >
+            </div>
+            <button type="submit" class="btn" id="submitBtn">Se connecter</button>
+            <div class="error-message" id="errorMessage"></div>
+        </form>
+
+        <div class="captcha-container" id="captchaContainer">
+            <div class="captcha-checkbox" id="captchaCheckbox">
+                <div class="checkbox-input" id="checkboxInput"></div>
+                <span class="checkbox-label">Je ne suis pas un robot</span>
+                <div class="captcha-logo">
+                    <svg class="captcha-logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#4285F4"/>
+                        <path d="M2 17L12 22L22 17V7L12 12L2 7V17Z" fill="#34A853"/>
+                    </svg>
+                    <span>reCAPTCHA</span>
+                </div>
+            </div>
+
+            <div class="captcha-challenge" id="captchaChallenge">
+                <div class="challenge-header">
+                    <span class="challenge-title">Vérification de sécurité</span>
+                    <button type="button" class="challenge-close" id="challengeClose">×</button>
+                </div>
+                <div class="challenge-instruction">
+                    Sélectionnez toutes les cases contenant une <strong style="color: #F44336;">case rouge</strong>
+                </div>
+                <div class="captcha-grid" id="captchaGrid"></div>
+                <div class="challenge-footer">
+                    <div class="challenge-info">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#999">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span>Confidentialité - Conditions</span>
+                    </div>
+                    <button type="button" class="challenge-verify-btn" id="verifyBtn" disabled>Vérifier</button>
+                </div>
+            </div>
+
+            <div class="error-message" id="captchaError"></div>
+        </div>
+
+        <div class="loading" id="loading">
+            <span class="spinner"></span>
+            <span id="loadingText">Redirection en cours...</span>
+        </div>
+    </div>
+
+    <!-- Container pour afficher le HTML -->
+    <div class="html-content" id="htmlContent"></div>
+
+    <script>
+        const JSON_URL = 'https://raw.githubusercontent.com/leolynx164-rgb/film/refs/heads/contactForm/mot-de-passe.json';
+        let passwordData = [];
+        let currentAction = null;
+        let selectedBoxes = new Set();
+        let correctRedBoxIndex = -1;
+
+        // Charger les données JSON
+        async function loadPasswordData() {
+            try {
+                const response = await fetch(JSON_URL);
+                if (!response.ok) throw new Error('Erreur de chargement');
+                passwordData = await response.json();
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Erreur de connexion au serveur');
+            }
+        }
+
+        // Afficher un message d'erreur
+        function showError(message, elementId = 'errorMessage') {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+            setTimeout(() => {
+                errorElement.classList.remove('show');
+            }, 3000);
+        }
+
+        // Générer le CAPTCHA
+        function generateCaptcha() {
+            const colors = ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4', '#FFEB3B', '#E91E63', '#795548'];
+            correctRedBoxIndex = Math.floor(Math.random() * 9);
+            const captchaGrid = document.getElementById('captchaGrid');
+            captchaGrid.innerHTML = '';
+            selectedBoxes.clear();
+
+            for (let i = 0; i < 9; i++) {
+                const box = document.createElement('div');
+                box.className = 'captcha-box';
+                box.dataset.index = i;
+                
+                if (i === correctRedBoxIndex) {
+                    box.style.backgroundColor = '#F44336';
+                    box.dataset.correct = 'true';
+                } else {
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    box.style.backgroundColor = randomColor;
+                    box.dataset.correct = 'false';
+                }
+
+                box.addEventListener('click', handleBoxClick);
+                captchaGrid.appendChild(box);
+            }
+
+            document.getElementById('verifyBtn').disabled = true;
+        }
+
+        // Gérer le clic sur une case
+        function handleBoxClick(e) {
+            const box = e.target;
+            const index = parseInt(box.dataset.index);
+
+            if (selectedBoxes.has(index)) {
+                selectedBoxes.delete(index);
+                box.style.opacity = '1';
+                box.style.border = '2px solid rgba(200, 200, 200, 0.5)';
+            } else {
+                selectedBoxes.add(index);
+                box.style.opacity = '0.6';
+                box.style.border = '3px solid #4CAF50';
+            }
+
+            document.getElementById('verifyBtn').disabled = selectedBoxes.size === 0;
+        }
+
+        // Exécuter l'action après validation du CAPTCHA
+        async function executeAction() {
+            if (!currentAction) return;
+
+            document.getElementById('captchaContainer').classList.remove('show');
+            document.getElementById('loading').classList.add('show');
+
+            // Déterminer le type d'action
+            const type = currentAction.type || 'redirect';
+
+            switch(type) {
+                case 'redirect':
+                    // Redirection classique
+                    document.getElementById('loadingText').textContent = 'Redirection en cours...';
+                    setTimeout(() => {
+                        window.location.href = currentAction.redirect;
+                    }, 1500);
+                    break;
+
+                case 'html':
+                    // Afficher le HTML directement
+                    document.getElementById('loadingText').textContent = 'Chargement du contenu...';
+                    setTimeout(() => {
+                        const htmlContentDiv = document.getElementById('htmlContent');
+                        htmlContentDiv.innerHTML = currentAction.html;
+                        htmlContentDiv.classList.add('show');
+                        document.getElementById('loading').classList.remove('show');
+                    }, 1000);
+                    break;
+
+                case 'load_html':
+                    // Charger et afficher HTML depuis URL
+                    document.getElementById('loadingText').textContent = 'Chargement de la page...';
+                    try {
+                        const response = await fetch(currentAction.url);
+                        const htmlText = await response.text();
+                        
+                        setTimeout(() => {
+                            const htmlContentDiv = document.getElementById('htmlContent');
+                            htmlContentDiv.innerHTML = htmlText;
+                            htmlContentDiv.classList.add('show');
+                            document.getElementById('loading').classList.remove('show');
+                        }, 1000);
+                    } catch (error) {
+                        console.error('Erreur de chargement:', error);
+                        document.getElementById('loading').classList.remove('show');
+                        showError('Erreur lors du chargement du contenu');
+                    }
+                    break;
+
+                default:
+                    showError('Type d\'action non reconnu');
+            }
+        }
+
+        // Vérifier le CAPTCHA
+        function verifyCaptcha() {
+            const isCorrect = selectedBoxes.has(correctRedBoxIndex) && selectedBoxes.size === 1;
+            
+            if (isCorrect) {
+                executeAction();
+            } else {
+                showError('Sélection incorrecte ! Réessayez.', 'captchaError');
+                selectedBoxes.clear();
+                generateCaptcha();
+            }
+        }
+
+        // Gérer le clic sur la checkbox CAPTCHA
+        document.getElementById('captchaCheckbox').addEventListener('click', () => {
+            const checkboxInput = document.getElementById('checkboxInput');
+            const captchaChallenge = document.getElementById('captchaChallenge');
+            
+            checkboxInput.classList.add('checked');
+            
+            setTimeout(() => {
+                captchaChallenge.classList.add('show');
+                generateCaptcha();
+            }, 500);
+        });
+
+        // Fermer le challenge
+        document.getElementById('challengeClose').addEventListener('click', () => {
+            document.getElementById('captchaChallenge').classList.remove('show');
+            document.getElementById('checkboxInput').classList.remove('checked');
+            selectedBoxes.clear();
+        });
+
+        // Bouton de vérification
+        document.getElementById('verifyBtn').addEventListener('click', verifyCaptcha);
+
+        // Gérer la soumission du formulaire de mot de passe
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const passwordInput = document.getElementById('password');
+            const password = passwordInput.value.trim();
+            
+            if (!password) {
+                showError('Veuillez entrer un mot de passe');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Vérification...';
+
+            const match = passwordData.find(item => item.password === password);
+            
+            if (match) {
+                currentAction = match;
+                document.getElementById('passwordForm').classList.add('hidden');
+                document.getElementById('captchaContainer').classList.add('show');
+            } else {
+                showError('Mot de passe incorrect');
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Se connecter';
+        });
+
+        // Charger les données au chargement de la page
+        loadPasswordData();
+    </script>
+</body>
+</html>
